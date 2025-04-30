@@ -1,19 +1,15 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async';
-import App from './App.tsx';
-import './index.css';
-import './i18n.ts';
-
-// Polyfill Buffer is now handled by vite-plugin-node-polyfills
+import { Analytics } from '@vercel/analytics/react';
+import './index.css'
+import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <StrictMode>
     <HelmetProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
+      <Analytics />
     </HelmetProvider>
-  </React.StrictMode>
-);
+  </StrictMode>,
+)

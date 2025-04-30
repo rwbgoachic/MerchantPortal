@@ -1,117 +1,155 @@
-import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Layout from './components/layout/Layout';
-import MainLayout from './components/layout/MainLayout';
-import Dashboard from './pages/Dashboard';
-import Employees from './pages/Employees';
-import AddEmployee from './pages/Employees/AddEmployee';
-import ViewEmployee from './pages/Employees/ViewEmployee';
-import PayrollProcess from './pages/PayrollProcess';
-import Reports from './pages/Reports';
-import TaxFiling from './pages/TaxFiling';
-import Settings from './pages/Settings';
-import EmployeePortal from './pages/Employee/EmployeePortal';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import Blog from './pages/Blog';
-import BlogPost from './pages/Blog/BlogPost';
-import NewPost from './pages/Blog/NewPost';
-import EditPost from './pages/Blog/EditPost';
-import AdminDashboard from './pages/Blog/AdminDashboard';
-import PrivacyPolicy from './pages/legal/PrivacyPolicy';
-import Terms from './pages/legal/Terms';
-import CompanySetup from './pages/CompanySetup';
+import { AdminProvider } from './contexts/AdminContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+import { DatabaseProvider } from './contexts/DatabaseContext';
+import { Toaster } from 'react-hot-toast';
+import ErrorBoundary from './components/ErrorBoundary';
+import SEO from './components/SEO';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminRoute from './components/auth/AdminRoute';
+import Layout from './components/layout/Layout';
 import LandingPage from './pages/LandingPage';
-import FAQ from './pages/FAQ';
-import TimeTracking from './pages/Employee/TimeTracking';
-import Benefits from './pages/Employee/Benefits';
 import Features from './pages/Features';
 import Pricing from './pages/Pricing';
-import MockAuth from './pages/auth/MockAuth';
-import { useAuth } from './contexts/AuthContext';
+import Documentation from './pages/Documentation';
+import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
+import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import BlogCategory from './pages/BlogCategory';
+import BlogEditor from './pages/BlogEditor';
+import BlogManagement from './pages/BlogManagement';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import OnboardingFlow from './pages/OnboardingFlow';
 
-function AppRoutes() {
-  const { user } = useAuth();
-  const location = useLocation();
-
+function App() {
   return (
-    <Routes>
-      {/* Public routes with MainLayout */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/faq" element={<FAQ />} />
-      </Route>
-
-      {/* Auth routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/mock-auth" element={<MockAuth />} />
-      
-      {/* Protected routes */}
-      <Route path="/setup" element={
-        <ProtectedRoute isAuthenticated={!!user}>
-          <CompanySetup />
-        </ProtectedRoute>
-      } />
-      
-      {/* Admin routes */}
-      <Route path="/app" element={
-        <ProtectedRoute isAuthenticated={!!user}>
-          <Layout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<Dashboard />} />
-        <Route path="employees" element={<Employees />} />
-        <Route path="employees/add" element={<AddEmployee />} />
-        <Route path="employees/:id" element={<ViewEmployee />} />
-        <Route path="payroll" element={<PayrollProcess />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="tax-filing" element={<TaxFiling />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="blog">
-          <Route index element={<AdminDashboard />} />
-          <Route path="new" element={<NewPost />} />
-          <Route path="edit/:id" element={<EditPost />} />
-        </Route>
-      </Route>
-      
-      {/* Employee portal */}
-      <Route path="/employee" element={
-        <ProtectedRoute isAuthenticated={!!user}>
-          <EmployeePortal />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/employee/timesheet" element={
-        <ProtectedRoute isAuthenticated={!!user}>
-          <TimeTracking />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/employee/benefits" element={
-        <ProtectedRoute isAuthenticated={!!user}>
-          <Benefits />
-        </ProtectedRoute>
-      } />
-      
-      {/* Fallback route */}
-      <Route path="*" element={<div>Page not found</div>} />
-    </Routes>
+    <ErrorBoundary>
+      <SEO />
+      <AuthProvider>
+        <AdminProvider>
+          <DatabaseProvider>
+            <NotificationProvider>
+              <Router>
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/docs" element={<Documentation />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogPost />} />
+                    <Route path="/blog/category/:slug" element={<BlogCategory />} />
+                    <Route
+                      path="/blog/manage"
+                      element={
+                        <ProtectedRoute>
+                          <BlogManagement />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/blog/new"
+                      element={
+                        <ProtectedRoute>
+                          <BlogEditor />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/blog/edit/:slug"
+                      element={
+                        <ProtectedRoute>
+                          <BlogEditor />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path="/auth/login" element={<Login />} />
+                    <Route path="/auth/register" element={<Register />} />
+                    <Route
+                      path="/dashboard"
+                      element={
+                        <ProtectedRoute>
+                          <Dashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/settings"
+                      element={
+                        <ProtectedRoute>
+                          <Settings />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/onboarding/*"
+                      element={
+                        <ProtectedRoute>
+                          <OnboardingFlow />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/*"
+                      element={
+                        <AdminRoute>
+                          <AdminDashboard />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Layout>
+                <Toaster />
+              </Router>
+            </NotificationProvider>
+          </DatabaseProvider>
+        </AdminProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
-export default function App() {
+function NotFound() {
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <div className="min-h-screen bg-white px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
+      <div className="mx-auto max-w-max">
+        <main className="sm:flex">
+          <p className="text-4xl font-bold tracking-tight text-primary-600 sm:text-5xl">404</p>
+          <div className="sm:ml-6">
+            <div className="sm:border-l sm:border-gray-200 sm:pl-6">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                Page not found
+              </h1>
+              <p className="mt-1 text-base text-gray-500">
+                Please check the URL in the address bar and try again.
+              </p>
+            </div>
+            <div className="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
+              <a
+                href="/"
+                className="inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              >
+                Go back home
+              </a>
+              <a
+                href="/contact"
+                className="inline-flex items-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              >
+                Contact support
+              </a>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }
+
+export default App;
