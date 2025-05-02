@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button, Input } from '@lib/ui/components';
-import { handleLogin } from '@lib/auth';
+import { Button, Input } from '@rwbgoachic/ui';
+import { handleLogin } from '@/lib/auth';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
