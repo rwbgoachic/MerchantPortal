@@ -31,5 +31,8 @@
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.2",
     "vitest": "^1.2.1"
+  },
+  "config": {
+    "legacy-peer-deps": true
   }
 }
