@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "faqs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the FAQ"
+          },
+          "question": {
+            "type": "string",
+            "description": "The frequently asked question"
+          },
+          "answer": {
+            "type": "string",
+            "description": "The answer to the question"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category or topic of the FAQ",
+            "enum": ["general", "payments", "security", "account", "technical"]
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": ["id", "question", "answer", "category"]
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name"]
+      }
+    }
+  },
+  "required": ["faqs", "categories"]
+}

@@ -18,6 +18,8 @@
     "@paysurity/security": "1.2.1",
     "@paysurity/ui": "1.1",
     "@mui/x-charts": "^6.19.4",
+    "@mui/material": "^5.15.5",
+    "@mui/icons-material": "^5.15.5",
     "dotenv-encrypted": "^1.0.0"
   },
   "devDependencies": {
