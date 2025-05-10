@@ -35,7 +35,14 @@ export const TransactionList: React.FC = () => {
 
       const { data, error } = await supabase
         .from('transactions')
-        .select('id, date, amount, currency, status, description')
+        .select(`
+          id,
+          date,
+          amount,
+          currency,
+          status,
+          description
+        `)
         .eq('merchant_id', user.id)
         .order('date', { ascending: false });
 
