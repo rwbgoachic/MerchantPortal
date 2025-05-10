@@ -21,7 +21,8 @@
     "@mui/material": "^5.15.5",
     "@mui/icons-material": "^5.15.5",
     "dotenv-encrypted": "^1.0.0",
-    "fluidpay-sdk": "2.3.1"
+    "fluidpay-sdk": "2.3.1",
+    "ui": "3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
